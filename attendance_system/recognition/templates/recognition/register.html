@@ -1,0 +1,96 @@
+{% extends 'recognition/base.html' %}
+{% load static %}
+
+{% block title %}Register Person — FaceAttend{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recognition/css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Register New Person</h1>
+
+<div class="grid-2">
+  <!-- Camera side -->
+  <div>
+    <div class="camera-container" style="margin-bottom:1rem">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    <div id="preview-container" class="hidden" style="margin-bottom:1rem">
+      <img id="preview" class="preview-img" />
+    </div>
+    <div class="camera-actions">
+      <button class="btn btn-primary" id="captureBtn">📸 Capture Photo</button>
+      <button class="btn btn-cancel" id="retakeBtn" style="display:none">🔄 Retake</button>
+    </div>
+  </div>
+
+  <!-- Form side -->
+  <div>
+    <div class="card">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="e.g. John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Employee / Student ID</label>
+        <input type="text" id="employee_id" placeholder="e.g. EMP001" />
+      </div>
+      <div id="alertBox" class="hidden"></div>
+      <button class="btn btn-success register-submit" id="submitBtn" disabled>
+        ✅ Register Person
+      </button>
+    </div>
+
+    <div class="card tips-card">
+      <strong>Tips for best results:</strong><br>
+      • Face the camera directly in good lighting<br>
+      • Remove glasses if possible<br>
+      • Keep a neutral expression<br>
+      • Ensure only one face is visible
+    </div>
+  </div>
+</div>
+
+<!-- Registered Persons Table -->
+<div class="card" style="margin-top:2rem">
+  <div class="persons-table-header">
+    <div class="card-title">Registered Persons</div>
+    <span id="personCount" class="person-count"></span>
+  </div>
+  <table id="personTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Employee ID</th>
+        <th>Registered At</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="personTableBody">
+      <tr><td colspan="5" class="table-empty">Loading...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-title">⚠️ Confirm Delete</div>
+    <p class="modal-body">
+      Are you sure you want to delete <strong id="deleteName"></strong>?
+      This will also remove all their attendance records.
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete</button>
+      <button class="btn btn-cancel" id="cancelDeleteBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'recognition/js/register.js' %}"></script>
+{% endblock %}

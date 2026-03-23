@@ -1,0 +1,103 @@
+/* ─── register.css — Register page styles ───────────────────────── */
+
+.preview-img {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid #6366f1;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.tips-card {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.tips-card strong {
+  color: #94a3b8;
+}
+
+.register-submit {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* ─── Persons table ──────────────────────────────────────────────── */
+.persons-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.persons-table-header .card-title {
+  margin: 0;
+}
+
+.person-count {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.table-empty {
+  text-align: center;
+  color: #64748b;
+  padding: 2rem;
+}
+
+/* ─── Delete Modal ───────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #00000099;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-box {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  border: 1px solid #334155;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-body {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+.modal-body strong {
+  color: #f1f5f9;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-actions .btn {
+  flex: 1;
+}
+
+.btn-cancel {
+  background: #334155;
+  color: #e2e8f0;
+}

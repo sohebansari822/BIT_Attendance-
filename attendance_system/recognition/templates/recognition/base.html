@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Face Attendance System{% endblock %}</title>
+
+  <!-- Global styles (navbar, cards, buttons, table, badges, spinner) -->
+  <link rel="stylesheet" href="{% static 'recognition/css/base.css' %}">
+
+  <!-- Page-specific styles injected by each child template -->
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <nav>
+    <span class="logo">🎓 FaceAttend</span>
+    <a href="/" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Dashboard</a>
+    <a href="/register/" {% if request.resolver_match.url_name == 'register_page' %}class="active"{% endif %}>Register</a>
+    <a href="/recognize/" {% if request.resolver_match.url_name == 'recognize_page' %}class="active"{% endif %}>Mark Attendance</a>
+    <a href="/attendance/" {% if request.resolver_match.url_name == 'attendance_list' %}class="active"{% endif %}>Records</a>
+  </nav>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Page-specific JS injected by each child template -->
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

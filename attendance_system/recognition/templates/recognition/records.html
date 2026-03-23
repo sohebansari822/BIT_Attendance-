@@ -1,0 +1,80 @@
+{% extends "recognition/base.html" %}
+{% block title %}Records — FaceAttend{% endblock %}
+{% block page_title %}Attendance Records{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="card" style="margin-bottom:20px;">
+  <form method="GET" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
+    <div class="form-group" style="margin:0;flex:1;min-width:160px;">
+      <label>Date</label>
+      <input type="date" name="date" value="{{ selected_date }}">
+    </div>
+    <div class="form-group" style="margin:0;flex:1;min-width:160px;">
+      <label>Department</label>
+      <select name="department">
+        <option value="">All Departments</option>
+        {% for val, label in departments %}
+        <option value="{{ val }}" {% if selected_dept == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group" style="margin:0;flex:2;min-width:200px;">
+      <label>Search Name / ID</label>
+      <input type="text" name="search" value="{{ search }}" placeholder="e.g. Priya or CS2021001">
+    </div>
+    <button type="submit" class="btn btn-primary">🔍 Filter</button>
+    <a href="{% url 'records' %}" class="btn btn-ghost">Reset</a>
+  </form>
+</div>
+
+<!-- Table -->
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <div style="font-weight:600;">Results — {{ total }} record{{ total|pluralize }}</div>
+  </div>
+
+  {% if records %}
+  <table>
+    <thead>
+      <tr>
+        <th>Person</th>
+        <th>ID</th>
+        <th>Department</th>
+        <th>Date</th>
+        <th>Time In</th>
+        <th>Status</th>
+        <th>Confidence</th>
+        <th>Marked By</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rec in records %}
+      <tr>
+        <td>
+          {% if rec.person.photo %}
+          <img src="{{ rec.person.photo.url }}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px;">
+          {% else %}
+          <span style="display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--accent);align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff;vertical-align:middle;margin-right:8px;">{{ rec.person.name.0 }}</span>
+          {% endif %}
+          {{ rec.person.name }}
+        </td>
+        <td style="color:var(--muted);">{{ rec.person.person_id }}</td>
+        <td>{{ rec.person.get_department_display }}</td>
+        <td>{{ rec.date }}</td>
+        <td>{{ rec.time_in|time:"H:i:s" }}</td>
+        <td><span class="badge badge-{{ rec.status }}">{{ rec.status }}</span></td>
+        <td style="color:var(--muted);">{{ rec.confidence|floatformat:3 }}</td>
+        <td style="color:var(--muted);font-size:.75rem;">{{ rec.marked_by }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div style="text-align:center;padding:40px;color:var(--muted);">
+    <div style="font-size:2rem;">📭</div>
+    <div>No records found for the selected filters.</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

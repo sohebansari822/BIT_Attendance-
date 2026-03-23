@@ -1,0 +1,19 @@
+/* ─── index.css — Dashboard page styles ─────────────────────────── */
+
+.dashboard-actions { margin-bottom: 2rem; }
+
+.dashboard-actions .btn {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1rem;
+}
+
+.recent-empty {
+  color: #64748b;
+  text-align: center;
+  padding: 2rem;
+}
+
+.recent-empty a {
+  color: #6366f1;
+}

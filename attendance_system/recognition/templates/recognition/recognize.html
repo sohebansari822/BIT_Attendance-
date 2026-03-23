@@ -1,0 +1,44 @@
+{% extends 'recognition/base.html' %}
+{% load static %}
+
+{% block title %}Mark Attendance — FaceAttend{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recognition/css/recognize.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Mark Attendance</h1>
+
+<div class="grid-2">
+  <!-- Camera -->
+  <div>
+    <div class="camera-container" style="margin-bottom:1rem">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    <button class="btn btn-success capture-btn-full" id="captureBtn">
+      📸 Capture & Recognize
+    </button>
+  </div>
+
+  <!-- Result panel -->
+  <div>
+    <div class="card result-card" id="resultCard">
+      <div class="result-icon">🙂</div>
+      <p class="result-confidence">Capture a photo to mark attendance</p>
+    </div>
+
+    <div class="card today-card">
+      <div class="card-title">Today's Attendance</div>
+      <div id="todayList">
+        <p class="today-empty">Loading...</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'recognition/js/recognize.js' %}"></script>
+{% endblock %}

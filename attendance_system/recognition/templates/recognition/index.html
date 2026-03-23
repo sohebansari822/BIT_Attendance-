@@ -1,0 +1,60 @@
+{% extends 'recognition/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard — FaceAttend{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recognition/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Dashboard</h1>
+
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">Registered People</div>
+    <div class="card-value">{{ total_persons }}</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Present Today</div>
+    <div class="card-value" style="color:#10b981">{{ today_count }}</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Today's Date</div>
+    <div class="card-value" style="font-size:1.3rem;padding-top:0.5rem">{{ today }}</div>
+  </div>
+</div>
+
+<div class="grid-2 dashboard-actions">
+  <a href="/register/" class="btn btn-primary">➕ Register New Person</a>
+  <a href="/recognize/" class="btn btn-success">📸 Mark Attendance</a>
+</div>
+
+<div class="card">
+  <div class="card-title" style="margin-bottom:1rem">Recent Attendance</div>
+  {% if recent %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Employee ID</th>
+        <th>Time</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in recent %}
+      <tr>
+        <td>{{ record.person.name }}</td>
+        <td><span class="badge badge-blue">{{ record.person.employee_id }}</span></td>
+        <td>{{ record.time_in|date:"d M Y, H:i" }}</td>
+        <td><span class="badge badge-green">{{ record.confidence|floatformat:2 }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="recent-empty">No attendance records yet. <a href="/recognize/">Mark attendance</a> to get started.</p>
+  {% endif %}
+</div>
+{% endblock %}

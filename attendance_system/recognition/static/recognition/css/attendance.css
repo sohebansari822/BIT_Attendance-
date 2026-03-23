@@ -1,0 +1,77 @@
+/* ─── attendance.css — Records page styles ───────────────────────── */
+
+.filter-bar {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-form .form-group {
+  margin: 0;
+}
+
+.date-input {
+  padding: 0.5rem 0.75rem;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #e2e8f0;
+}
+
+.filter-form .btn {
+  margin-top: 1.4rem;
+}
+
+.btn-secondary {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.record-count {
+  margin-left: auto;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.confidence-bar-wrap {
+  background: #334155;
+  border-radius: 999px;
+  height: 6px;
+  width: 80px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.confidence-bar-fill {
+  background: #10b981;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.no-records {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+
+.no-records .no-records-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.no-records a {
+  color: #6366f1;
+}
+
+.muted { color: #475569; }

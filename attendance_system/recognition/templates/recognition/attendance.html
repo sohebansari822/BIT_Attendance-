@@ -1,0 +1,68 @@
+{% extends 'recognition/base.html' %}
+{% load static %}
+
+{% block title %}Attendance Records — FaceAttend{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'recognition/css/attendance.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Attendance Records</h1>
+
+<div class="card filter-bar">
+  <form method="get" class="filter-form">
+    <div class="form-group">
+      <label>Filter by Date</label>
+      <input type="date" name="date" value="{{ date_filter }}" class="date-input" onchange="this.form.submit()" />
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="/attendance/" class="btn btn-secondary">Today</a>
+  </form>
+  <div class="record-count">
+    {{ records.count }} record{{ records.count|pluralize }} found
+  </div>
+</div>
+
+<div class="card">
+  {% if records %}
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Employee ID</th>
+        <th>Date</th>
+        <th>Time In</th>
+        <th>Confidence</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td class="muted">{{ forloop.counter }}</td>
+        <td><strong>{{ record.person.name }}</strong></td>
+        <td><span class="badge badge-blue">{{ record.person.employee_id }}</span></td>
+        <td>{{ record.date }}</td>
+        <td>{{ record.time_in|date:"H:i:s" }}</td>
+        <td>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar-fill" style="width:{{ record.confidence|floatformat:0 }}%"></div>
+          </div>
+          {{ record.confidence|floatformat:2 }}
+        </td>
+        <td><span class="badge badge-green">Present</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="no-records">
+    <div class="no-records-icon">📋</div>
+    No attendance records for {{ date_filter }}.
+    <br><a href="/recognize/">Mark attendance now →</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

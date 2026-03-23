@@ -1,0 +1,110 @@
+{% extends "recognition/base.html" %}
+{% block title %}Dashboard — FaceAttend{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block head %}
+<style>
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .stat-card .label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+  .stat-card .value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .stat-card .sub   { font-size: .8rem; color: var(--muted); }
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 80px; margin-top: 12px; }
+  .bar-wrap  { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar       { width: 100%; background: var(--accent); border-radius: 4px 4px 0 0; opacity: .8; transition: opacity .2s; min-height: 4px; }
+  .bar:hover { opacity: 1; }
+  .bar-label { font-size: .65rem; color: var(--muted); }
+  .person-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+  .avatar-placeholder { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .85rem; color: #fff; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="grid-4" style="margin-bottom:24px;">
+  <div class="stat-card">
+    <div class="label">Total Registered</div>
+    <div class="value" style="color:var(--accent)">{{ total_persons }}</div>
+    <div class="sub">Active persons</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Present Today</div>
+    <div class="value" style="color:var(--accent2)">{{ today_attendance }}</div>
+    <div class="sub">{{ today }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Absent Today</div>
+    <div class="value" style="color:var(--danger)">{{ absent_today }}</div>
+    <div class="sub">Not yet marked</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Attendance Rate</div>
+    <div class="value" style="color:var(--warn)">
+      {% if total_persons > 0 %}{% widthratio today_attendance total_persons 100 %}%{% else %}—{% endif %}
+    </div>
+    <div class="sub">Today</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <!-- Weekly chart -->
+  <div class="card">
+    <div style="font-weight:600;margin-bottom:4px;">Last 7 Days Attendance</div>
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="card">
+    <div style="font-weight:600;margin-bottom:16px;">Quick Actions</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="{% url 'attendance' %}" class="btn btn-primary" style="justify-content:center;">📷 &nbsp; Mark Attendance Now</a>
+      <a href="{% url 'register' %}"   class="btn btn-ghost"   style="justify-content:center;">➕ &nbsp; Register New Person</a>
+      <a href="{% url 'records' %}"    class="btn btn-ghost"   style="justify-content:center;">📋 &nbsp; View All Records</a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent activity -->
+<div class="card" style="margin-top:24px;">
+  <div style="font-weight:600;margin-bottom:16px;">Recent Activity</div>
+  {% if recent_records %}
+  <table>
+    <thead><tr><th>Person</th><th>ID</th><th>Date</th><th>Time In</th><th>Status</th><th>Confidence</th></tr></thead>
+    <tbody>
+      {% for rec in recent_records %}
+      <tr>
+        <td>
+          {% if rec.person.photo %}
+          <img src="{{ rec.person.photo.url }}" class="person-avatar" style="vertical-align:middle;margin-right:8px;">
+          {% else %}
+          <span class="avatar-placeholder" style="vertical-align:middle;margin-right:8px;">{{ rec.person.name.0 }}</span>
+          {% endif %}
+          {{ rec.person.name }}
+        </td>
+        <td style="color:var(--muted)">{{ rec.person.person_id }}</td>
+        <td>{{ rec.date }}</td>
+        <td>{{ rec.time_in|time:"H:i:s" }}</td>
+        <td><span class="badge badge-{{ rec.status }}">{{ rec.status }}</span></td>
+        <td style="color:var(--muted)">{{ rec.confidence|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="color:var(--muted);text-align:center;padding:30px 0;">No attendance records yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const data = {{ week_data|safe }};
+const max  = Math.max(...data.map(d => d.count), 1);
+const chart = document.getElementById('barChart');
+data.forEach(d => {
+  const h   = Math.max((d.count / max) * 68, 4);
+  const w   = document.createElement('div');
+  w.className = 'bar-wrap';
+  w.innerHTML = `<div class="bar" style="height:${h}px" title="${d.count} present"></div><span class="bar-label">${d.day}</span>`;
+  chart.appendChild(w);
+});
+</script>
+{% endblock %}
