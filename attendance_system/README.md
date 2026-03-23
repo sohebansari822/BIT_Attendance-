@@ -1,4 +1,4 @@
-git # 🎓 FaceAttend — Face Recognition Attendance System
+🎓 BIT-Attendance — Face Recognition Attendance System
 
 ## Tech Stack
 - **Django** — Web framework + SQLite database
